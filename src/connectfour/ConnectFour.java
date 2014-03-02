@@ -6,12 +6,15 @@
 
 package connectfour;
 
+import java.io.File;
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.scene.image.ImageView;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
@@ -25,12 +28,17 @@ public class ConnectFour extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         
         Scene scene = new Scene(root);
+        ImageView iv2 = (ImageView) scene.lookup("#cell_0_1");
         
-        Image i = new Image("file:///Users/timbo/Desktop/doge-640x400.jpg", true);
-        ImageView iv = new ImageView(i);
-        FXMLDocumentController docController = new FXMLDocumentController();
-        docController.iv = iv;
- 
+        File oFile = new File("/Users/timbo/Development/ConnectFour/src/img/o_yel.bmp");
+        File xFile = new File("/Users/timbo/Development/ConnectFour/src/img/x_red.bmp");
+        
+        Image o = new Image("file://" + oFile.getAbsolutePath(), true);
+        Image x = new Image("file://" + xFile.getAbsolutePath(), true);
+        iv2.setImage(o);
+        
+        System.out.println(iv2.getId());
+        
         
         stage.setScene(scene);
         stage.show();

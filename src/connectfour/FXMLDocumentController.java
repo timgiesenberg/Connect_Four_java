@@ -6,14 +6,17 @@
 
 package connectfour;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -29,20 +32,56 @@ public class FXMLDocumentController implements Initializable {
     private GridPane gameFieldGrid;
     
     @FXML
-    public ImageView iv;
-    
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
-    }
+    private ImageView iv;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        Image i = new Image("file:///Users/timbo/Desktop/doge-640x400.jpg", true);
-        iv = new ImageView(i);
-        System.out.println(gameFieldGrid.getId());
-    }    
+        
+        //TODO (ef:ef) loop through gridpane and add an imageview in every cell
+        //gameFieldGrid.add(red, 5, 6);
+        
+        // TODO (ef:tg) integrate relative Uri 
+        File oFile = new File("/Users/timbo/Development/ConnectFour/src/img/o_yel.bmp");
+        File xFile = new File("/Users/timbo/Development/ConnectFour/src/img/x_red.bmp");
+        
+        Image o = new Image("file://" + oFile.getAbsolutePath(), true);
+        Image x = new Image("file://" + xFile.getAbsolutePath(), true);
+        
+        for(int i = 0; i <= 6; i++){
+            for(int j = 0; j <= 6; j++){
+                ImageView iv = new ImageView();
+                iv.setId("cell_" + String.valueOf(i) + "_" + String.valueOf(j));
+                
+                iv.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                                    new EventHandler<MouseEvent>(){
+                                    @Override
+                                    public void handle(MouseEvent arg0) {
+                                        System.out.println("handle overwrite");
+                                        if(arg0.getEventType() == MouseEvent.MOUSE_CLICKED){
+                                            System.out.println("handle overwrite, if");
+                                            System.out.println(((ImageView)arg0.getTarget()).getId());
+                                    }
+                    }
+                });
+                
+                gameFieldGrid.add(iv, i, j);
+            }
+        }
+
+        /**
+        gameFieldGrid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent arg0) {
+                if(arg0.getEventType() == MouseEvent.MOUSE_CLICKED){
+                    System.out.println(arg0.getSceneX() + "," + arg0.getSceneY());
+                }
+            }
+        });/**/
+    }
+    
+    public void test(){
+        //System.out.println(gameFieldGrid.getOnMouseClicked().handle(iv));
+        
+    }
     
 }
