@@ -10,6 +10,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -52,17 +53,7 @@ public class FXMLDocumentController implements Initializable {
                 ImageView iv = new ImageView();
                 iv.setId("cell_" + String.valueOf(i) + "_" + String.valueOf(j));
                 
-                iv.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                                    new EventHandler<MouseEvent>(){
-                                    @Override
-                                    public void handle(MouseEvent arg0) {
-                                        System.out.println("handle overwrite");
-                                        if(arg0.getEventType() == MouseEvent.MOUSE_CLICKED){
-                                            System.out.println("handle overwrite, if");
-                                            System.out.println(((ImageView)arg0.getTarget()).getId());
-                                    }
-                    }
-                });
+                iv.addEventHandler(MouseEvent.MOUSE_CLICKED, new MouseClick<MouseEvent>());
                 
                 gameFieldGrid.add(iv, i, j);
             }
@@ -77,6 +68,7 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
         });/**/
+        gameFieldGrid.addEventHandler(MouseEvent.MOUSE_CLICKED, new MouseClick<MouseEvent>());
     }
     
     public void test(){
