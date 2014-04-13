@@ -12,4 +12,11 @@ package connectfour;
  */
 public class GameLogic {
     
+    public GameLogic(){
+        
+    }
+    
+    public void computerMove(){
+        
+    }
 }
