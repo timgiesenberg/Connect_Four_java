@@ -10,10 +10,10 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -87,8 +87,18 @@ public class ConnectFour extends Application {
         
         System.out.println(iv2.getId());
         
-        stage.setScene(scene);
-        stage.show();
+       // stage.setScene(scene);
+       // stage.show();
+	
+	
+	Test test = new Test(g.gamefield);
+	test.run();
+	ArrayList<FourLine> lines = g.check();
+	for (FourLine line : lines) {
+	    System.out.println(line.toString());
+	}
+	
+	
     }
 
     /**
