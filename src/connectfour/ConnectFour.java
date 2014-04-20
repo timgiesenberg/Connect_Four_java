@@ -88,7 +88,7 @@ public class ConnectFour extends Application {
         System.out.println(iv2.getId());
         
        // stage.setScene(scene);
-       // stage.show();
+       // stage.show(); 
 	
 	
 	Test test = new Test(g.gamefield);
