@@ -41,17 +41,19 @@ public class FXMLDocumentController implements Initializable {
         //gameFieldGrid.add(red, 5, 6);
         
         // TODO (ef:tg) integrate relative Uri 
+       /*
         File oFile = new File("/Users/timbo/Development/ConnectFour/src/img/o_yel.bmp");
         File xFile = new File("/Users/timbo/Development/ConnectFour/src/img/x_red.bmp");
         
         Image o = new Image("file://" + oFile.getAbsolutePath(), true);
         Image x = new Image("file://" + xFile.getAbsolutePath(), true);
-        
+        */
         for(int i = 0; i <= 6; i++){
             for(int j = 0; j <= 6; j++){
                 ImageView iv = new ImageView();
                 iv.setId("cell_" + String.valueOf(i) + "_" + String.valueOf(j));
                 
+                /*
                 iv.addEventHandler(MouseEvent.MOUSE_CLICKED,
                                     new EventHandler<MouseEvent>(){
                                     @Override
@@ -63,7 +65,7 @@ public class FXMLDocumentController implements Initializable {
                                     }
                     }
                 });
-                
+                */
                 gameFieldGrid.add(iv, i, j);
             }
         }
