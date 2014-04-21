@@ -15,9 +15,9 @@ public class Player {
     private int points;	    // Number of matches won
     private int color;	    // Players color (red = 1, yellow = 2);
     private int moves;	    // Number of moves played
-    private string name;    // Players name
+    private String name;    // Players name
     
-    public Player(int player, string name, int color) {
+    public Player(int player, String name, int color) {
 	this.player = player;
 	this.name = name;
 	this.points = 0;
@@ -49,5 +49,6 @@ public class Player {
     public int getColor() {
 	return this.color;
     }
+}
     
 
