@@ -15,6 +15,7 @@ import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -70,6 +71,9 @@ public class ConnectFour extends Application {
                 }
         );
         
+	Node gf = scene.lookup("#gameFieldGrid");
+	
+	
         ImageView iv1 = (ImageView) scene.lookup("#cell_0_1");
         ImageView iv2 = (ImageView) scene.lookup("#cell_4_3");
         
@@ -98,7 +102,22 @@ public class ConnectFour extends Application {
 	    System.out.println(line.toString());
 	}
 	
+	test.clearGrid();
+	test.fillRandom();
+	test.printGrid();
+	lines = g.check();
+	test.printResult(lines);
+	test.clearGrid();
+	test.fillRandom2();
+	test.printGrid();
+	lines = g.check();
+	test.printResult(lines);
+	for(int i = 0; i < g.gamefield[0].length;i++) {
+	    System.out.println("Naechste freie Zeile in Spalte "+i+": "+g.getNextRow(i));
 	
+	}
+	
+	System.exit(0);
     }
 
     /**
