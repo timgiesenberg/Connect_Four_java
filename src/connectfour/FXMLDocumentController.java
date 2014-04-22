@@ -6,18 +6,11 @@
 
 package connectfour;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 
 /**
  *
@@ -29,10 +22,10 @@ public class FXMLDocumentController implements Initializable {
     private Label label;
     
     @FXML
-    private GridPane gameFieldGrid;
+    //private GridPane gameFieldGrid;
     
-    @FXML
-    private ImageView iv;
+   // @FXML
+    //private ImageView iv;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -48,11 +41,13 @@ public class FXMLDocumentController implements Initializable {
         Image o = new Image("file://" + oFile.getAbsolutePath(), true);
         Image x = new Image("file://" + xFile.getAbsolutePath(), true);
         */
-        for(int i = 0; i <= 6; i++){
+      
+	/*
+	for(int i = 0; i <= 6; i++){
             for(int j = 0; j <= 6; j++){
                 ImageView iv = new ImageView();
                 iv.setId("cell_" + String.valueOf(i) + "_" + String.valueOf(j));
-                
+          */      
                 /*
                 iv.addEventHandler(MouseEvent.MOUSE_CLICKED,
                                     new EventHandler<MouseEvent>(){
@@ -66,10 +61,11 @@ public class FXMLDocumentController implements Initializable {
                     }
                 });
                 */
-                gameFieldGrid.add(iv, i, j);
+        /*    
+	gameFieldGrid.add(iv, i, j);
             }
         }
-
+*/
         /**
         gameFieldGrid.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
