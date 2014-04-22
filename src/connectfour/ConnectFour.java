@@ -6,22 +6,19 @@
 
 package connectfour;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -59,8 +56,107 @@ public class ConnectFour extends Application {
         GameLogic g = new GameLogic();
         g.getComputerMove();
         
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        
+        AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+	Scene scene = new Scene(root);
+
+	int[][] gg = g.getGameGrid();
+	
+	int h;
+	int w;
+	int linelengthX, linelengthY;
+	int cellWidth = 50;
+	int marginX = 100;
+	int marginY = 100;
+	int xLines = gg[0].length;
+	int yLines = gg.length;
+	Line gridline;
+	
+	
+	int useGridType = 1;
+	
+	// GRID TYPE 1
+	
+	
+
+	
+	if(useGridType == 1) {
+	    Rectangle rect = new Rectangle(marginX, marginY, xLines*cellWidth, yLines*cellWidth);
+	    
+	    
+	    root.getChildren().add(rect);
+	}
+	
+	
+	// GRID TYPE 2
+	if(useGridType == 2 || useGridType == 1) {
+	    Color gridColor = (useGridType == 1) ? Color.BLUE : Color.BLACK;
+	    
+	    for(int i = 0; i <= Math.max(xLines, yLines); i++) {
+		h = marginY+(i*cellWidth);
+		w = marginX+(i*cellWidth);
+
+		if(i <= yLines) {
+		    linelengthX = (cellWidth*gg[0].length)+marginX;
+		    gridline = new Line(marginX, h, linelengthX, h);
+		    gridline.setStroke(gridColor);
+		    gridline.setSmooth(false);
+		    gridline.setStrokeWidth(2);
+		    root.getChildren().add(gridline);
+	
+		}
+
+		if(i <= xLines) {
+		    linelengthY = (cellWidth*gg.length)+marginY;
+		    gridline = new Line(w, marginY, w, linelengthY);
+		    gridline.setStroke(gridColor);
+		    gridline.setSmooth(false);
+		    gridline.setStrokeWidth(2);
+		    root.getChildren().add(gridline);    
+		}
+	    }
+	}
+	
+	
+
+	
+	
+	
+	
+	
+	/*
+	
+	final Canvas canvas = new Canvas(500,500);
+	GraphicsContext gc = canvas.getGraphicsContext2D();
+
+	
+	gc.setLineWidth(2);
+	gc.setStroke(Color.BLACK);
+
+	int h;
+	int w;
+	int linelength;
+	int cellWidth = 50;
+	int margin = 100;
+	for(int i = 0; i <= 7; i++) {
+	    h = margin+(i*cellWidth);
+	    w = margin+(i*cellWidth);
+	    linelength = (cellWidth*7)+margin;
+	    gc.strokeLine(margin, h, linelength, h);
+	    gc.strokeLine(w, margin, w, linelength);
+	}
+	
+	gc.fillOval(10, 10, 25, 25);
+	*/
+	
+	//
+	//gc.fillRect(10,10,210,10);
+
+	//root.getChildren().add(canvas);
+	
+	stage.setScene(scene);
+        stage.show(); 
+	
+	/*
         Scene scene = new Scene(root);
 
         scene.lookup("#gameFieldGrid").addEventFilter(MouseEvent.MOUSE_CLICKED,
@@ -71,6 +167,7 @@ public class ConnectFour extends Application {
                 }
         );
         
+	
 	Node gf = scene.lookup("#gameFieldGrid");
 	
 	
@@ -90,9 +187,8 @@ public class ConnectFour extends Application {
         iv2.setImage(x);
         
         System.out.println(iv2.getId());
-        
-       // stage.setScene(scene);
-       // stage.show(); 
+        */
+    
 	
 	
 	Test test = new Test(g.gamefield);
@@ -117,7 +213,42 @@ public class ConnectFour extends Application {
 	
 	}
 	
-	System.exit(0);
+	int m = 1;
+	
+	double centerX, centerY;
+	Circle circle;
+	Color playerColor = Color.YELLOW;
+	System.out.println(gg.length + " "+ gg[0].length);
+	for(int y = 0; y < gg.length; y++) {
+	    for(int x  = 0; x < gg[y].length; x++) {
+		if(useGridType==1) {
+		    if(gg[y][x] == 0) playerColor = Color.LIGHTGREY;
+		} else {
+		    if(gg[y][x] == 0) continue;
+		}
+		
+		if(gg[y][x] == 1) {
+		    playerColor = Color.RED;
+		} else if(gg[y][x] == 2) {
+		    playerColor = Color.BLUE;
+		}
+		centerX = (marginX+Math.floor(cellWidth/2))+(x*cellWidth);
+		centerY = marginY+Math.floor(cellWidth/2)+(y*cellWidth);
+		 circle = new Circle(centerX,centerY,20,playerColor);
+		 circle.setStrokeWidth(2);
+		 root.getChildren().add(circle);
+	    }
+	}
+	
+	
+	
+	
+        
+
+	
+	
+	
+	//System.exit(0);
     }
 
     /**
