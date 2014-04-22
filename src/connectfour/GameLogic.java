@@ -11,38 +11,27 @@ import java.util.ArrayList;
 public class GameLogic {
 
     
+    int[][] gamefield = new int[6][7];
     
-    
-
-    
-    int[][] gamefield = new int[7][7];
-
-
- 
-    
-    public GameLogic(){
-	
-	
-    }
+    public GameLogic(){}
 
     
     public ArrayList<FourLine> check() {
-        boolean found = false;
+        //boolean found = false;
 	
-	ArrayList<FourLine> lines = new ArrayList<FourLine>();
+	ArrayList<FourLine> lines = new ArrayList<>();
 	
         for(int zeile = 0; zeile < gamefield.length; zeile++) {
             for(int spalte = 0; spalte < (gamefield[zeile].length); spalte++) {
-                found = false;
+              //  found = false;
                 
-                //System.out.println("Pruefe "+zeile+"/"+spalte);
                 if(gamefield[zeile][spalte] == 0) continue;
                 int p = gamefield[zeile][spalte];
 		
-                if(zeile < 4) {
+                if(zeile <= (gamefield.length)-4) {
 		    
                     // checks diagonal lines from top right to bottom left    
-                    if(spalte >= 3) {
+                    if(spalte >= (gamefield[zeile].length)-4) {
                         if(p == gamefield[zeile+1][spalte-1] && p == gamefield[zeile+2][spalte-2] && p == gamefield[zeile+3][spalte-3]) {
 			    lines.add(new FourLine(zeile, spalte, FourLine.BOTTOM_LEFT, p));
 			    
@@ -73,30 +62,17 @@ public class GameLogic {
 	return lines;
     }
     
-    
-    /*
-        private void check() {
-        for(int zeile = 0; zeile <= (gamefield.length)-4; zeile++) {
-            for(int spalte = 3; spalte < (gamefield[zeile].length); spalte++) {
-                System.out.println("Pruefe "+zeile+"/"+spalte);
-                if(gamefield[zeile][spalte] == 0) continue;
-                int p = gamefield[zeile][spalte];
-                if(p == gamefield[zeile+1][spalte-1] && p == gamefield[zeile+2][spalte-2] && p == gamefield[zeile+3][spalte-3]) {
-                    System.out.println("FOUND DIAGONAL LINE STARTING AT "+ zeile +"/"+spalte);
-                }
-            }
-            for(int spalte = 0; spalte <= (gamefield[zeile].length)-4; spalte++) {
-                System.out.println("Pruefe "+zeile+"/"+spalte);
-                if(gamefield[zeile][spalte] == 0) continue;
-                int p = gamefield[zeile][spalte];
-                if(p == gamefield[zeile+1][spalte+1] && p == gamefield[zeile+2][spalte+2] && p == gamefield[zeile+3][spalte+3]) {
-                    System.out.println("FOUND DIAGONAL LINE STARTING AT "+ zeile +"/"+spalte);
-                }
-            }
-        }  
+    public int[][] getGameGrid() {
+	return gamefield;
     }
-    */
     
+    public int getNextRow(int column) {
+	for(int zeile = gamefield.length-1; zeile >= 0; zeile--) {
+	    if(gamefield[zeile][column] == 0) return zeile;
+	}
+	// column is full
+	return -1;
+    }
     
     public int getComputerMove(){
         double computerMoveDouble = Math.round(Math.random() * 7);
