@@ -9,12 +9,11 @@ package connectfour;
 import java.util.ArrayList;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -25,31 +24,14 @@ import javafx.stage.Stage;
  *
  * @author tim.giesenberg@me.com
  */
+
+
+
+
+
 public class ConnectFour extends Application {
     
-    private int getClickedCol(MouseEvent me) {
-        double colWidth = 0.0;
-        double clickX = 0.0;
-        int clickedCol = -1;
-        GridPane gp = null;
 
-        if (me.getTarget().getClass().getCanonicalName().equals("javafx.scene.image.ImageView")) {
-            ImageView iv = (ImageView) me.getTarget();
-            gp = (GridPane) iv.getParent();
-        } else if (me.getTarget().getClass().getCanonicalName().equals("javafx.scene.layout.GridPane")) {
-            gp = (GridPane) me.getTarget();
-        }
-
-        if (gp != null) {
-            colWidth = gp.getColumnConstraints().get(0).getMinWidth();
-            clickX = me.getX();
-            clickedCol = (int) Math.floor(clickX / colWidth);
-            System.out.println("angeklickte Spalte: " + clickedCol);
-            me.consume();
-        }
-        return clickedCol;
-    }
-    
     @Override
     public void start(Stage stage) throws Exception {
         
@@ -77,11 +59,21 @@ public class ConnectFour extends Application {
 	// GRID TYPE 1
 	
 	
-
+/*
+	addEventFilter(MouseEvent.MOUSE_CLICKED,
+                new CFEventHandler<MouseEvent>() {
+                    public void handle(MouseEvent me) {
+                        getClickedCol(me);
+                    }
+                }*/
 	
 	if(useGridType == 1) {
 	    Rectangle rect = new Rectangle(marginX, marginY, xLines*cellWidth, yLines*cellWidth);
 	    
+	    rect.setId("clickarea");
+	    rect.setOnMouseClicked((EventHandler<? super MouseEvent>) new CFEventHandler());
+
+       
 	    
 	    root.getChildren().add(rect);
 	}
@@ -160,7 +152,7 @@ public class ConnectFour extends Application {
         Scene scene = new Scene(root);
 
         scene.lookup("#gameFieldGrid").addEventFilter(MouseEvent.MOUSE_CLICKED,
-                new EventHandler<MouseEvent>() {
+                new CFEventHandler<MouseEvent>() {
                     public void handle(MouseEvent me) {
                         getClickedCol(me);
                     }
@@ -236,6 +228,7 @@ public class ConnectFour extends Application {
 		centerY = marginY+Math.floor(cellWidth/2)+(y*cellWidth);
 		 circle = new Circle(centerX,centerY,20,playerColor);
 		 circle.setStrokeWidth(2);
+		 circle.setMouseTransparent(true);
 		 root.getChildren().add(circle);
 	    }
 	}
@@ -262,5 +255,9 @@ public class ConnectFour extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+
+
+    
     
 }
