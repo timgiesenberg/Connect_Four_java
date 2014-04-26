@@ -18,6 +18,13 @@ import javafx.scene.shape.Rectangle;
  */
 public class CFEventHandler implements EventHandler {
 
+    ConnectFour cf;
+    GameLogic gl;
+    
+    CFEventHandler(ConnectFour aThis) {
+	cf = aThis;
+    }
+
     @Override
     public void handle(Event event) {
 	Object source = event.getSource();
@@ -29,19 +36,9 @@ public class CFEventHandler implements EventHandler {
 		System.out.println(clickedCol);
 	    }
 	}
-	
-	
 	//System.err.println("Not supported yet.");
-	
-	
-	
-	
     }
-    
-    
-        private int getClickedCol(MouseEvent me, Rectangle rect) {
-        
-
+    private int getClickedCol(MouseEvent me, Rectangle rect) {
 	    double colWidth = 50;
 	    double clickX = 0.0;
 	    int clickedCol = -1;
@@ -51,7 +48,16 @@ public class CFEventHandler implements EventHandler {
             System.out.println("angeklickte Spalte: " + clickedCol + " " +clickX);
 	    
             me.consume();
-            return clickedCol;
+            
+	    
+	    
+	    int row = gl.getNextRow(clickedCol);
+	    gl.gamefield[row][clickedCol] = 1;
+	    cf.drawToken(row, clickedCol, 1);
+	    
+	    return clickedCol;
+	    
+	    
 	    
 	}
     }
