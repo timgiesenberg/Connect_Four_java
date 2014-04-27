@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<AnchorPane id="AnchorPane" fx:id="apane" prefHeight="486.0" prefWidth="579.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="connectfour.controllers.FXMLDocumentController">
+  <children>
+    <ImageView id="iv2" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="322.0" pickOnBounds="true" preserveRatio="true" />
+    <MenuBar id="menubar" fx:id="mainMenu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <menus>
+        <Menu id="mGame" mnemonicParsing="false" text="Game">
+          <items>
+            <Menu mnemonicParsing="false" text="New Game">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Local" />
+                <MenuItem mnemonicParsing="false" text="Remote" />
+              </items>
+            </Menu>
+            <MenuItem fx:id="miClose" mnemonicParsing="false" onAction="#handleCloseAction" text="Close" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Options">
+          <items>
+            <Menu fx:id="menuGridSize" mnemonicParsing="false" text="Grid Size">
+              <items>
+                <RadioMenuItem fx:id="rmiGridSize1" mnemonicParsing="false" text="3 x 3 (Tic Tac Toe)" />
+                <RadioMenuItem fx:id="rmiGridSize2" mnemonicParsing="false" text="7 x 6 (Classic)" />
+              </items>
+            </Menu>
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Settings" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="How to play" />
+            <MenuItem mnemonicParsing="false" onAction="#handleAboutAction" text="About" fx:id="miAbout" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <Rectangle fx:id="recta" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="321.0" layoutY="243.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+  </children>
+</AnchorPane>
