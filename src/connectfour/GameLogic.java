@@ -74,7 +74,7 @@ public class GameLogic {
 	return -1;
     }
     
-    public int getComputerMove(){
+    public int getComputerMove()  {
         double computerMoveDouble = Math.round(Math.random() * 7);
         int computerMove = (int) computerMoveDouble;
         

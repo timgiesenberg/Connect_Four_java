@@ -30,6 +30,9 @@ import javafx.stage.Stage;
  */
 public class ConnectFour extends Application {
 
+    static int GAMEMODE_LOCALE = 1;
+    static int GAMEMODE_REMOTE = 2;
+    
     Group group;
     Group dotGroup;
     AnchorPane root;
@@ -37,6 +40,8 @@ public class ConnectFour extends Application {
     int xLines;
     int yLines;
     int cellWidth;
+   
+    
 
     private void centerGrid() {
 	MenuBar bar = (MenuBar) scene.lookup("#menubar");
@@ -55,10 +60,9 @@ public class ConnectFour extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-	GameLogic g = new GameLogic();
-	g.getComputerMove();
+	
 
-	root = (AnchorPane) FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+	root = (AnchorPane) FXMLLoader.load(getClass().getResource("/connectfour/views/FXMLDocument.fxml"));
 	stage.setMinHeight(200);
 	stage.setMinWidth(200);
 	stage.setWidth(600);
@@ -70,42 +74,91 @@ public class ConnectFour extends Application {
 	root.setPrefSize(600, 600);
 	scene = new Scene(root);
 
-	MenuBar menuBar = (MenuBar) scene.lookup("#menubar");
-	Node menu;
-	menu = scene.lookup("#mGame");
-	MenuItem closeMenuItem
-		= MenuItemBuilder.create().text("Close").onAction(new EventHandler<ActionEvent>() {
-		    @Override
-		    public void handle(ActionEvent e) {
-			System.exit(0);
-		    }
-		})
-		.accelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN)).build();
-	menuBar.getMenus().get(0).getItems().add(closeMenuItem);
-
 	stage.setScene(scene);
 	stage.show();
 
-	int[][] gg = g.getGameGrid();
+	
 
-	int h;
-	int w;
-	int linelengthX, linelengthY;
-	cellWidth = 50;
+	
+	    //root.getChildren().add(rect);
+/*
 
-	int marginY = 0;
-	xLines = gg[0].length;
+	Test test = new Test(g.gamefield);
+	test.run();
+	ArrayList<FourLine> lines = g.check();
+	for (FourLine line : lines) {
+	    System.out.println(line.toString());
+	}
+        
+
+	test.clearGrid();
+	test.fillRandom();
+	test.printGrid();
+	lines = g.check();
+	test.printResult(lines);
+	test.clearGrid();
+	test.fillRandom2();
+	test.printGrid();
+	lines = g.check();
+	test.printResult(lines);
+	test.clearGrid();
+
+	for (int i = 0; i < g.gamefield[0].length; i++) {
+	    System.out.println("Naechste freie Zeile in Spalte " + i + ": " + g.getNextRow(i));
+
+	}
+*/
+	int m = 1;
+
+	
+
+	scene.widthProperty().addListener(new ChangeListener<Number>() {
+	    @Override
+	    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		centerGrid();
+
+	    }
+	});
+
+	scene.heightProperty().addListener(new ChangeListener<Number>() {
+	    @Override
+	    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		centerGrid();
+	    }
+	});
+
+        drawGrid(3, 4, GAMEMODE_LOCALE);
+	centerGrid();
+    }
+    
+    public void drawGrid(int rows, int cols, int mode) {
+        GameLogic g = new GameLogic();
+        
+        //int[][] gg = g.getGameGrid();
+        
+        int[][] gg = new int[rows][cols];
+        int h, w, linelengthX, linelengthY;
+        double centerX, centerY;
+        
+        xLines = gg[0].length;
 	yLines = gg.length;
-	int marginX = 0; //(int)Math.floor((root.getWidth() - (xLines*cellWidth))/2);
-
-	Line gridline;
-	group = new Group();
+        cellWidth = 50;
+                
+	Color gridColor = Color.BLUE;
+        Color tokenColor = Color.web("f4f4f4");
+        
+        Line gridline;
+	Circle circle;
+        Rectangle rect = (Rectangle) scene.lookup("#recta");
+       
+        group = new Group();
 	group.setLayoutX(0);
 	group.setLayoutY(0);
 	dotGroup = new Group();
-
-	Rectangle rect = (Rectangle) scene.lookup("#recta");
-	rect.setFill(Color.DODGERBLUE);
+        
+        
+        // draws grid background
+        rect.setFill(Color.DODGERBLUE);
 	group.getChildren().add(rect);
 
 	rect.setLayoutX(0);
@@ -116,10 +169,8 @@ public class ConnectFour extends Application {
 	CFEventHandler eh = new CFEventHandler(this);
 	eh.gl = g;
 	rect.setOnMouseClicked((EventHandler<? super MouseEvent>) eh);
-	    //root.getChildren().add(rect);
 
-	Color gridColor = Color.BLUE;
-
+        // draws vertical and horizonzal grid lines
 	for (int i = 0; i <= Math.max(xLines, yLines); i++) {
 	    h = (i * cellWidth);
 	    w = (i * cellWidth);
@@ -144,52 +195,16 @@ public class ConnectFour extends Application {
 		group.getChildren().add(gridline);
 	    }
 	}
-
-	Test test = new Test(g.gamefield);
-	test.run();
-	ArrayList<FourLine> lines = g.check();
-	for (FourLine line : lines) {
-	    System.out.println(line.toString());
-	}
-
-	test.clearGrid();
-	test.fillRandom();
-	test.printGrid();
-	lines = g.check();
-	test.printResult(lines);
-	test.clearGrid();
-	test.fillRandom2();
-	test.printGrid();
-	lines = g.check();
-	test.printResult(lines);
-	test.clearGrid();
-
-	for (int i = 0; i < g.gamefield[0].length; i++) {
-	    System.out.println("Naechste freie Zeile in Spalte " + i + ": " + g.getNextRow(i));
-
-	}
-
-	int m = 1;
-
-	double centerX, centerY;
-	Circle circle;
-	Color playerColor = Color.YELLOW;
-	System.out.println(gg.length + " " + gg[0].length);
+        
+        // draws empty game tokens
+  
+	
 
 	for (int y = 0; y < gg.length; y++) {
 	    for (int x = 0; x < gg[y].length; x++) {
-		if (gg[y][x] == 0) {
-		    playerColor = Color.web("f4f4f4");
-		}
-
-		if (gg[y][x] == 1) {
-		    playerColor = Color.RED;
-		} else if (gg[y][x] == 2) {
-		    playerColor = Color.BLUE;
-		}
 		centerX = (Math.floor(cellWidth / 2)) + (x * cellWidth);
 		centerY = Math.floor(cellWidth / 2) + (y * cellWidth);
-		circle = new Circle(centerX, centerY, 20, playerColor);
+		circle = new Circle(centerX, centerY, 20, tokenColor);
 		circle.setStrokeWidth(2);
 		circle.setMouseTransparent(true);
 
@@ -198,23 +213,9 @@ public class ConnectFour extends Application {
 	}
 	group.getChildren().add(dotGroup);
 	root.getChildren().add(group);
+        
+	
 
-	scene.widthProperty().addListener(new ChangeListener<Number>() {
-	    @Override
-	    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-		centerGrid();
-
-	    }
-	});
-
-	scene.heightProperty().addListener(new ChangeListener<Number>() {
-	    @Override
-	    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-		centerGrid();
-	    }
-	});
-
-	centerGrid();
     }
 
     public void drawToken(int row, int col, int player) {
