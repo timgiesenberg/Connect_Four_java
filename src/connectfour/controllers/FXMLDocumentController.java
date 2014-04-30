@@ -40,6 +40,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML private MenuItem miClose;
     @FXML private MenuBar mainMenu;
     @FXML private Menu menuGridSize;
+    @FXML private ToggleGroup tgGridSize;
+    
     
     @FXML private void handleAboutAction(ActionEvent event) throws Exception {
         Stage stage = new Stage();
@@ -70,11 +72,11 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         miClose.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN));
-        ToggleGroup tgGridSize = new ToggleGroup();
+        //ToggleGroup tgGridSize = new ToggleGroup();
         
         for(int i = 0; i < menuGridSize.getItems().size(); i++) {
             RadioMenuItem item = (RadioMenuItem)menuGridSize.getItems().get(i);
-            item.setToggleGroup(tgGridSize);
+          
             item.setAccelerator(new KeyCodeCombination(KeyCode.getKeyCode(String.valueOf(i+1)), KeyCombination.CONTROL_DOWN));
             if(item.getText().contains("(Classic)")) {
                 item.setSelected(true);

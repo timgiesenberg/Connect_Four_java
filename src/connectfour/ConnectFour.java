@@ -6,10 +6,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.MenuItemBuilder;
@@ -41,6 +44,7 @@ public class ConnectFour extends Application {
     int yLines;
     int cellWidth;
    
+    @FXML private Menu menuGridSize;
     
 
     private void centerGrid() {
@@ -59,9 +63,6 @@ public class ConnectFour extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
-	
-
 	root = (AnchorPane) FXMLLoader.load(getClass().getResource("/connectfour/views/FXMLDocument.fxml"));
 	stage.setMinHeight(200);
 	stage.setMinWidth(200);
@@ -73,50 +74,13 @@ public class ConnectFour extends Application {
 	root.setMaxSize(1000, 1000);
 	root.setPrefSize(600, 600);
 	scene = new Scene(root);
-
 	stage.setScene(scene);
-	stage.show();
-
-	
-
-	
-	    //root.getChildren().add(rect);
-/*
-
-	Test test = new Test(g.gamefield);
-	test.run();
-	ArrayList<FourLine> lines = g.check();
-	for (FourLine line : lines) {
-	    System.out.println(line.toString());
-	}
-        
-
-	test.clearGrid();
-	test.fillRandom();
-	test.printGrid();
-	lines = g.check();
-	test.printResult(lines);
-	test.clearGrid();
-	test.fillRandom2();
-	test.printGrid();
-	lines = g.check();
-	test.printResult(lines);
-	test.clearGrid();
-
-	for (int i = 0; i < g.gamefield[0].length; i++) {
-	    System.out.println("Naechste freie Zeile in Spalte " + i + ": " + g.getNextRow(i));
-
-	}
-*/
-	int m = 1;
-
-	
+	stage.show();	
 
 	scene.widthProperty().addListener(new ChangeListener<Number>() {
 	    @Override
 	    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 		centerGrid();
-
 	    }
 	});
 
@@ -131,10 +95,14 @@ public class ConnectFour extends Application {
 	centerGrid();
     }
     
+    private Point2D getGridSize() {
+        Point2D gridSize = new Point2D(3,3);
+        //menuGridSize.getItems()
+        return gridSize;
+    }
+    
     public void drawGrid(int rows, int cols, int mode) {
         GameLogic g = new GameLogic();
-        
-        //int[][] gg = g.getGameGrid();
         
         int[][] gg = new int[rows][cols];
         int h, w, linelengthX, linelengthY;
