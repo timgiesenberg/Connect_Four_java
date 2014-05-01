@@ -13,7 +13,7 @@
 	<Label layoutX="24.0" layoutY="83.0" text="Player 2:" />
 	<TextField fx:id="tfPlayername1" layoutX="100.0" layoutY="46.0" prefWidth="200.0" promptText="Player 1 name" />
 	<TextField fx:id="tfPlayername2" layoutX="100.0" layoutY="77.0" prefWidth="200.0" promptText="Player 2 name" />
-	<ColorPicker fx:id="player1ColorPicker" layoutX="316.0" layoutY="46.0" minHeight="25.0" prefHeight="25.0" promptText="Player 1 color">
+	<ColorPicker fx:id="player1ColorPicker" style="-fx-color-label-visible: false" layoutX="316.0" layoutY="46.0" minHeight="25.0" prefHeight="25.0" promptText="Player 1 color">
 	    <customColors>
 		<Color fx:value="#ff0000" />
 		<Color fx:value="#00ff00" />
@@ -26,7 +26,7 @@
 		<Color fx:value="#a500ff" />
 	    </customColors>
 	</ColorPicker>
-	<ColorPicker fx:id="player2ColorPicker" layoutX="316.0" layoutY="77.0" minHeight="25.0" prefHeight="25.0" promptText="Player 2 color">
+	<ColorPicker fx:id="player2ColorPicker" style="-fx-color-label-visible: false"  layoutX="316.0" layoutY="77.0" minHeight="25.0" prefHeight="25.0" promptText="Player 2 color">
 	    <customColors>
 		<Color fx:value="#ff0000" />
 		<Color fx:value="#00ff00" />

@@ -53,12 +53,8 @@ public class ConnectFour extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 	CFProperties props = CFProperties.getInstance();
-
-	//root = (AnchorPane) FXMLLoader.load(getClass().getResource("/connectfour/views/FXMLDocument.fxml"));
 	URL location = getClass().getResource("/connectfour/views/FXMLDocument.fxml");
 	FXMLLoader loader = new FXMLLoader();
-	//loader.setLocation(location);
-	//loader.setBuilderFactory(new JavaFXBuilderFactory());
 	root = (AnchorPane) loader.load(location.openStream());
 
 	stage.setMinHeight(200);

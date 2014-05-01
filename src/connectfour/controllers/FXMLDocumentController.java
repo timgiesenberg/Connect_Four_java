@@ -74,7 +74,7 @@ public class FXMLDocumentController implements Initializable {
 	about = FXMLLoader.load(getClass().getResource("/connectfour/views/FXMLPlayerSettings.fxml"));
 
 	stage.setScene(new Scene(about));
-	stage.setTitle("About the game");
+	stage.setTitle("Players");
 	stage.initStyle(StageStyle.UTILITY);
 	stage.initModality(Modality.WINDOW_MODAL);
 	stage.initOwner(mainMenu.getScene().getWindow());
