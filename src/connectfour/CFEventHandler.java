@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package connectfour;
 
+import java.util.ArrayList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -20,7 +20,7 @@ public class CFEventHandler implements EventHandler {
 
     ConnectFour cf;
     GameLogic gl;
-    
+
     CFEventHandler(ConnectFour aThis) {
 	cf = aThis;
     }
@@ -28,39 +28,35 @@ public class CFEventHandler implements EventHandler {
     @Override
     public void handle(Event event) {
 	Object source = event.getSource();
-	if(source.getClass().getSimpleName().equals("Rectangle")) {
-	    Rectangle rect = (Rectangle)source;
-	    if(rect.getId().equals("clickarea")) {
+	if (source.getClass().getSimpleName().equals("Rectangle")) {
+	    Rectangle rect = (Rectangle) source;
+	    if (rect.getId().equals("clickarea")) {
 		int clickedCol;
-		clickedCol = getClickedCol((MouseEvent)event, rect);
-		System.out.println(clickedCol);
+		clickedCol = getClickedCol((MouseEvent) event, rect);
+		int row = gl.getNextRow(clickedCol);
+		if (row >= 0) {
+		    Player p = cf.getActivePlayer();
+		    gl.gamefield[row][clickedCol] = p.getId();
+		    cf.drawToken(row, clickedCol, p.getId(), p.getColor());
+		    cf.togglePlayer();
+		    ArrayList lines = (ArrayList) gl.check();
+		    if (lines.size() > 0) {
+			System.out.println("PLAYER " + p.getName() + "WINS");
+		    }
+		}
 	    }
 	}
-	//System.err.println("Not supported yet.");
     }
-    private int getClickedCol(MouseEvent me, Rectangle rect) {
-	    double colWidth = 50;
-	    double clickX = 0.0;
-	    int clickedCol = -1;
-	    GridPane gp = null;
-	    clickX = me.getX()-rect.getX();
-            clickedCol = (int) Math.floor(clickX / colWidth);
-            System.out.println("angeklickte Spalte: " + clickedCol + " " +clickX);
-	    
-            me.consume();
-            
-	    
-	    
-	    int row = gl.getNextRow(clickedCol);
-	    gl.gamefield[row][clickedCol] = 1;
-	    cf.drawToken(row, clickedCol, 1);
-	    
-	    return clickedCol;
-	    
-	    
-	    
-	}
-    }
-    
-    
 
+    private int getClickedCol(MouseEvent me, Rectangle rect) {
+	double colWidth = 50;
+	double clickX;
+	int clickedCol;
+
+	GridPane gp = null;
+	clickX = me.getX() - rect.getX();
+	clickedCol = (int) Math.floor(clickX / colWidth);
+	me.consume();
+	return clickedCol;
+    }
+}
