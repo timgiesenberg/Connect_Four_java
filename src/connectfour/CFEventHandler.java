@@ -11,6 +11,9 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog.Actions;
+import org.controlsfx.dialog.Dialogs;
 
 /**
  *
@@ -41,8 +44,23 @@ public class CFEventHandler implements EventHandler {
 		    cf.togglePlayer();
 		    ArrayList lines = (ArrayList) gl.check();
 		    if (lines.size() > 0) {
-			System.out.println("PLAYER " + p.getName() + "WINS");
+			Action response = Dialogs.create().actions(Actions.NO, Actions.YES)
+				.owner(cf.root)
+				.title("Congratulation!")
+				.masthead(p.getName() + " wins the game!")
+				.message("Would you like to play again?")
+				.showConfirm();
+			if (response == Actions.NO) {
+			    cf.stage.close();
+			} else {
+			    cf.deleteGrid();
+			    cf.drawGrid();
+			}
 		    }
+
+		    Test t = new Test(gl.gamefield);
+		    t.printGrid();
+
 		}
 	    }
 	}

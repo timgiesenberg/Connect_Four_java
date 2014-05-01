@@ -33,6 +33,7 @@ public class ConnectFour extends Application {
     AnchorPane root;
     Scene scene;
     CFProperties props;
+    Stage stage;
     private FXMLDocumentController mainController;
     int xLines;
     int yLines;
@@ -72,7 +73,7 @@ public class ConnectFour extends Application {
 	scene = new Scene(root);
 	stage.setScene(scene);
 	stage.show();
-
+	this.stage = stage;
 	mainController = (FXMLDocumentController) loader.getController();
 	mainController.setActivePlayer(activePlayer);
 
@@ -96,7 +97,7 @@ public class ConnectFour extends Application {
 	players[0] = p1;
 	players[1] = p2;
 
-	drawGrid(new Grid(1, 1, 1));
+	drawGrid();
 	centerGrid();
     }
 
@@ -123,6 +124,12 @@ public class ConnectFour extends Application {
 
 	group.getChildren().clear();
 
+    }
+
+    public void drawGrid() {
+	Grid grid = mainController.getGrid();
+	drawGrid(grid);
+	centerGrid();
     }
 
     public void drawGrid(Grid grid) {

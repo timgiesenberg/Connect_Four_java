@@ -115,6 +115,20 @@ public class FXMLDocumentController implements Initializable {
 	cf.centerGrid();
     }
 
+    public Grid getGrid() {
+	Grid grid = new Grid(6, 7, 1);
+	for (MenuItem item : menuGridSize.getItems()) {
+	    if (((RadioMenuItem) item).isSelected()) {
+		grid = new Grid(
+			Integer.valueOf(item.getProperties().get("rows").toString()),
+			Integer.valueOf(item.getProperties().get("columns").toString()),
+			Integer.valueOf(item.getProperties().get("gamemode").toString()));
+	    }
+
+	}
+	return grid;
+    }
+
     public void test() {
 	System.out.println("TEST");
     }

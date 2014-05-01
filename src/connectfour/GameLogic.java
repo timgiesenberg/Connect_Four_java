@@ -23,8 +23,9 @@ public class GameLogic {
 	ArrayList<FourLine> lines = new ArrayList<>();
 
 	for (int zeile = 0; zeile < gamefield.length; zeile++) {
+	    System.out.println("-----------------------------------------------------");
 	    for (int spalte = 0; spalte < (gamefield[zeile].length); spalte++) {
-
+		System.out.println("Spalte: " + spalte + " Zeile: " + zeile + " length: " + gamefield[zeile].length);
 		if (gamefield[zeile][spalte] == 0) {
 		    continue;
 		}
@@ -32,7 +33,8 @@ public class GameLogic {
 
 		if (zeile <= (gamefield.length) - 4) {
 		    // checks diagonal lines from top right to bottom left
-		    if (spalte >= (gamefield[zeile].length) - 4) {
+		    System.out.println("if " + spalte + " > " + gamefield[zeile].length + "-4 ");
+		    if (spalte >= 3) {
 			if (p == gamefield[zeile + 1][spalte - 1] && p == gamefield[zeile + 2][spalte - 2] && p == gamefield[zeile + 3][spalte - 3]) {
 			    lines.add(new FourLine(zeile, spalte, FourLine.BOTTOM_LEFT, p));
 			}
@@ -49,7 +51,7 @@ public class GameLogic {
 		    }
 		}
 		// checks horizontal lines from left to right
-		if (spalte <= (gamefield.length) - 4) {
+		if (spalte <= (gamefield[zeile].length) - 4) {
 		    if (p == gamefield[zeile][spalte + 1] && p == gamefield[zeile][spalte + 2] && p == gamefield[zeile][spalte + 3]) {
 			lines.add(new FourLine(zeile, spalte, FourLine.RIGHT, p));
 		    }
