@@ -41,10 +41,15 @@
 	</ColorPicker>
 	<Button fx:id="btnOK" layoutX="366.0" layoutY="150.0" mnemonicParsing="false" onAction="#handleOKAction" text="OK" />
 	<Button fx:id="btnCancel" layoutX="267.0" layoutY="150.0" mnemonicParsing="false" onAction="#handleCancelAction" text="Cancel" />
-	<ComboBox layoutX="419.0" layoutY="77.0">
+	<ComboBox layoutX="419.0" layoutY="77.0" value="Human" fx:id="cbPlayerType">
+	    <tooltip>
+		<Tooltip text="Not yet implemented" />
+	    </tooltip>
 	    <items>
 		<FXCollections fx:factory="observableArrayList">
-		    <String fx:value="Human" fx:id="human" />
+		    <String fx:value="Human" fx:id="human">
+
+		    </String>
 		    <String fx:value="Computer" fx:id="computer" />
 		</FXCollections>
 	    </items>

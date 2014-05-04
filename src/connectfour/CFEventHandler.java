@@ -58,9 +58,8 @@ public class CFEventHandler implements EventHandler {
 			}
 		    }
 
-		    Test t = new Test(gl.gamefield);
-		    t.printGrid();
-
+		   // Test t = new Test(gl.gamefield);
+		    // t.printGrid();
 		}
 	    }
 	}

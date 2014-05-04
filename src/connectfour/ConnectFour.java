@@ -3,20 +3,30 @@ package connectfour;
 import connectfour.controllers.FXMLDocumentController;
 import java.net.URL;
 import javafx.application.Application;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
 
 /**
  * @author sebastian.gohres@gmail.com
@@ -33,13 +43,22 @@ public class ConnectFour extends Application {
     AnchorPane root;
     Scene scene;
     CFProperties props;
-    Stage stage;
+    public Stage stage;
     private FXMLDocumentController mainController;
     int xLines;
     int yLines;
     int cellWidth;
     int activePlayer = 1;
     Player players[];
+    private WebView webView;
+    private ProgressBar loadProgress;
+    private Label progressText;
+    private Pane splashLayout;
+    private GameLogic g;
+    // int moves = 0;
+    public IntegerProperty moves = new SimpleIntegerProperty(0);
+    private static final int SPLASH_WIDTH = 676;
+    private static final int SPLASH_HEIGHT = 227;
 
     public ConnectFour() {
 	instance = this;
@@ -52,11 +71,12 @@ public class ConnectFour extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
 	CFProperties props = CFProperties.getInstance();
 	URL location = getClass().getResource("/connectfour/views/FXMLDocument.fxml");
 	FXMLLoader loader = new FXMLLoader();
 	root = (AnchorPane) loader.load(location.openStream());
-
+	stage = new Stage(StageStyle.DECORATED);
 	stage.setMinHeight(200);
 	stage.setMinWidth(200);
 	stage.setWidth(600);
@@ -87,6 +107,13 @@ public class ConnectFour extends Application {
 	    }
 	});
 
+	moves.addListener(new ChangeListener() {
+	    @Override public void changed(ObservableValue o, Object oldVal,
+		    Object newVal) {
+		mainController.setMoves(moves.get());
+	    }
+	});
+
 	players = new Player[2];
 	Player p1 = new Player(1, props.getString("player1.name"), Color.web(props.getString("player1.color")));
 	Player p2 = new Player(2, props.getString("player2.name"), Color.web(props.getString("player2.color")));
@@ -95,6 +122,7 @@ public class ConnectFour extends Application {
 
 	drawGrid();
 	centerGrid();
+
     }
 
     public void togglePlayer() {
@@ -104,6 +132,21 @@ public class ConnectFour extends Application {
 
     public Player getActivePlayer() {
 	return players[activePlayer - 1];
+    }
+
+    public void gameOver() {
+	Action response = Dialogs.create().actions(Dialog.Actions.NO, Dialog.Actions.YES)
+		.owner(stage)
+		.title("Draw!")
+		.masthead("You got it... NOT!")
+		.message("Neither " + players[0].getName() + " nor " + players[1].getName() + " wins this game.\nWould you like to play again?")
+		.showConfirm();
+	if (response == Dialog.Actions.NO) {
+	    stage.close();
+	} else {
+	    deleteGrid();
+	    drawGrid();
+	}
     }
 
     public void setActivePlayer(int player) {
@@ -119,6 +162,7 @@ public class ConnectFour extends Application {
     public void deleteGrid() {
 
 	group.getChildren().clear();
+	moves.set(0);
 
     }
 
@@ -128,8 +172,12 @@ public class ConnectFour extends Application {
 	centerGrid();
     }
 
+    public int getMoves() {
+	return moves.get();
+    }
+
     public void drawGrid(Grid grid) {
-	GameLogic g = new GameLogic(grid);
+	g = new GameLogic(grid);
 
 	int[][] gg = new int[grid.getRows()][grid.getColumns()];
 	int h, w, linelengthX, linelengthY;
@@ -223,6 +271,10 @@ public class ConnectFour extends Application {
 	Circle circle = (Circle) dotGroup.getChildren().get(index);
 	circle.setMouseTransparent(true);
 	circle.setFill(c);
+	moves.set(moves.get() + 1);
+	if (g.getFreeFields() <= 0) {
+	    gameOver();
+	}
     }
 
 }

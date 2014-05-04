@@ -23,8 +23,8 @@
 		    <items>
 			<Menu mnemonicParsing="false" text="New Game">
 			    <items>
-				<MenuItem mnemonicParsing="false" text="Local" />
-				<MenuItem mnemonicParsing="false" text="Remote" />
+				<MenuItem mnemonicParsing="false" text="Local" id="gamemode-local" onAction="#handleNewLocalGameAction" />
+				<MenuItem mnemonicParsing="false" text="Remote" id="gamemode-remote" onAction="#handleNewRemoteGameAction" />
 			    </items>
 			</Menu>
 			<MenuItem mnemonicParsing="false" onAction="#handleCloseAction" text="Close" fx:id="miClose" />
@@ -61,6 +61,7 @@
 		</Menu>
 	    </menus>
 	</MenuBar>
+	<Label fx:id="lMoves" layoutY="40"  AnchorPane.rightAnchor="20.0" text="Moves: 0" />
 	<ImageView fx:id="ivActivePlayer" layoutX="10" layoutY="43" />
 	<Label text="Player 1:" layoutX="45" layoutY="40" fx:id="lInfoPlayerName1" />
 	<Label text="Player 2:" layoutX="45" layoutY="60" fx:id="lInfoPlayerName2" />

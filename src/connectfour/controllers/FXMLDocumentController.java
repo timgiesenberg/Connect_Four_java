@@ -30,6 +30,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
 
 /**
  *
@@ -47,6 +50,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML private Rectangle raInfoPlayerColor1;
     @FXML private Rectangle raInfoPlayerColor2;
     @FXML private ImageView ivActivePlayer;
+    @FXML private Label lMoves;
 
     private int activePlayer = 1;
 
@@ -109,10 +113,39 @@ public class FXMLDocumentController implements Initializable {
 
 	}
 	ConnectFour cf = ConnectFour.getInstance();
+	Action response = Dialog.Actions.YES;
+	if (cf.getMoves() > 0) {
+	    response = Dialogs.create().actions(Dialog.Actions.NO, Dialog.Actions.YES)
+		    .owner(cf.stage)
+		    .title("Really?")
+		    .masthead("Game in progress")
+		    .message("Changing the grid size starts a new game. The current running game will be lost!\nWould you like to continue? ")
+		    .showConfirm();
+	}
+	if (response == Dialog.Actions.YES) {
+	    cf.deleteGrid();
+	    cf.drawGrid(grid);
+	    cf.centerGrid();
+	}
+    }
 
+    @FXML
+    private void handleNewLocalGameAction(ActionEvent event) throws Exception {
+	ConnectFour cf = ConnectFour.getInstance();
 	cf.deleteGrid();
-	cf.drawGrid(grid);
+	cf.drawGrid(getGrid());
 	cf.centerGrid();
+    }
+
+    @FXML
+    private void handleNewRemoteGameAction(ActionEvent event) throws Exception {
+	ConnectFour cf = ConnectFour.getInstance();
+	Dialogs.create()
+		.owner(cf.stage)
+		.title("Ooops...")
+		.masthead(":( \nI'm so sorry...")
+		.message("but we have not yet implemented this feature.")
+		.showInformation();
     }
 
     public Grid getGrid() {
@@ -145,24 +178,28 @@ public class FXMLDocumentController implements Initializable {
 	ivActivePlayer.setLayoutY(23 + (20 * player));
     }
 
+    public void setMoves(int moves) {
+	lMoves.setText("Moves: " + moves);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 	CFProperties props = CFProperties.getInstance();
-
+	ConnectFour cf = ConnectFour.getInstance();
+	/*
+	 cf.moves.addListener(new ChangeListener() {
+	 @Override public void changed(ObservableValue o, Object oldVal,
+	 Object newVal) {
+	 lMoves.setText("Moves: " + newVal);
+	 System.out.println("BLA");
+	 }
+	 });
+	 */
 	lInfoPlayerName1.setText("Player 1: " + props.getString("player1.name", "Player 1"));
 	lInfoPlayerName2.setText("Player 2: " + props.getString("player2.name", "Player 2"));
 	raInfoPlayerColor1.setFill(Color.web(props.getString("player1.color")));
 	raInfoPlayerColor2.setFill(Color.web(props.getString("player2.color")));
 	setActivePlayer(1);
-	/*
-	 for (int i = 0; i < menuGridSize.getItems().size(); i++) {
-	 RadioMenuItem item = (RadioMenuItem) menuGridSize.getItems().get(i);
 
-	 item.setAccelerator(new KeyCodeCombination(KeyCode.getKeyCode(String.valueOf(i + 1)), KeyCombination.CONTROL_DOWN));
-	 if (item.getText().contains("(Classic)")) {
-	 item.setSelected(true);
-	 }
-	 }
-	 */
     }
 }

@@ -13,11 +13,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import org.controlsfx.dialog.Dialogs;
 
 /**
  *
@@ -29,24 +31,48 @@ public class FXMLPlayerSettingsController implements Initializable {
     @FXML private TextField tfPlayername2;
     @FXML private ColorPicker player1ColorPicker;
     @FXML private ColorPicker player2ColorPicker;
+    @FXML private ComboBox cbPlayerType;
+    private static double maxLength = Math.sqrt(65025 + 65025 + 65025);
 
     @FXML private void handleOKAction(ActionEvent event) throws Exception {
 	CFProperties props = CFProperties.getInstance();
+	Color color1 = player1ColorPicker.getValue();
+	Color color2 = player2ColorPicker.getValue();
 	props.setProperty("player1.name", tfPlayername1.getText());
 	props.setProperty("player2.name", tfPlayername2.getText());
 	props.setProperty("player1.color", player1ColorPicker.getValue().toString());
 	props.setProperty("player2.color", player2ColorPicker.getValue().toString());
 	props.save();
+
 	Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 	Label l1 = (Label) stage.getOwner().getScene().lookup("#lInfoPlayerName1");
 	Label l2 = (Label) stage.getOwner().getScene().lookup("#lInfoPlayerName2");
 	Rectangle r1 = (Rectangle) stage.getOwner().getScene().lookup("#raInfoPlayerColor1");
 	Rectangle r2 = (Rectangle) stage.getOwner().getScene().lookup("#raInfoPlayerColor2");
-	l1.setText("Player 1: " + tfPlayername1.getText());
-	l2.setText("Player 2: " + tfPlayername2.getText());
-	r1.setFill(Color.web(player1ColorPicker.getValue().toString()));
-	r2.setFill(Color.web(player2ColorPicker.getValue().toString()));
-	stage.close();
+
+	if (getColorDifference(color1, color2) < 0.35) {
+	    Dialogs.create()
+		    .owner(stage)
+		    .title("Color blindness?")
+		    .masthead(":( \nI'm so sorry...")
+		    .message("but the colors are too similar. Please choose another one.")
+		    .showError();
+	} else if (tfPlayername1.getText().equalsIgnoreCase(tfPlayername2.getText())) {
+	    Dialogs.create()
+		    .owner(stage)
+		    .title("Namesake?")
+		    .masthead(":( \nI'm so sorry...")
+		    .message("but you cannot use the same name for both players.")
+		    .showError();
+
+	} else {
+	    l1.setText("Player 1: " + tfPlayername1.getText());
+	    l2.setText("Player 2: " + tfPlayername2.getText());
+	    r1.setFill(Color.web(player1ColorPicker.getValue().toString()));
+	    r2.setFill(Color.web(player2ColorPicker.getValue().toString()));
+	    stage.close();
+	}
+
     }
 
     @FXML private void handleCancelAction(ActionEvent event) throws Exception {
@@ -56,6 +82,10 @@ public class FXMLPlayerSettingsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+	System.out.println("TEST");
+	System.out.println(Math.sqrt(4));
+	System.out.println(Math.pow(4, 2));
+
 	CFProperties props = CFProperties.getInstance();
 
 	player1ColorPicker.setValue(Color.web(props.getString("player1.color", "Blue")));
@@ -64,4 +94,13 @@ public class FXMLPlayerSettingsController implements Initializable {
 	tfPlayername2.setText(props.getString("player2.name", "Player 2"));
 
     }
+
+    public static double getColorDifference(Color color1, Color color2) {
+	return Math.sqrt(
+		Math.pow(color1.getRed() - color2.getRed(), 2)
+		+ Math.pow(color1.getGreen() - color2.getGreen(), 2)
+		+ Math.pow(color1.getBlue() - color2.getBlue(), 2)
+	);
+    }
+
 }
