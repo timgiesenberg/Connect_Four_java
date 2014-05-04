@@ -6,6 +6,7 @@
 package connectfour.controllers;
 
 import connectfour.CFProperties;
+import connectfour.ConnectFour;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -19,6 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 /**
@@ -36,13 +39,10 @@ public class FXMLPlayerSettingsController implements Initializable {
 
     @FXML private void handleOKAction(ActionEvent event) throws Exception {
 	CFProperties props = CFProperties.getInstance();
+	ConnectFour cf = ConnectFour.getInstance();
+
 	Color color1 = player1ColorPicker.getValue();
 	Color color2 = player2ColorPicker.getValue();
-	props.setProperty("player1.name", tfPlayername1.getText());
-	props.setProperty("player2.name", tfPlayername2.getText());
-	props.setProperty("player1.color", player1ColorPicker.getValue().toString());
-	props.setProperty("player2.color", player2ColorPicker.getValue().toString());
-	props.save();
 
 	Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 	Label l1 = (Label) stage.getOwner().getScene().lookup("#lInfoPlayerName1");
@@ -66,11 +66,33 @@ public class FXMLPlayerSettingsController implements Initializable {
 		    .showError();
 
 	} else {
-	    l1.setText("Player 1: " + tfPlayername1.getText());
-	    l2.setText("Player 2: " + tfPlayername2.getText());
-	    r1.setFill(Color.web(player1ColorPicker.getValue().toString()));
-	    r2.setFill(Color.web(player2ColorPicker.getValue().toString()));
-	    stage.close();
+	    Action response = Dialog.Actions.YES;
+	    if (cf.getMoves() > 0) {
+		response = Dialogs.create().actions(Dialog.Actions.NO, Dialog.Actions.YES)
+			.owner(cf.stage)
+			.title("Really?")
+			.masthead("Game in progress")
+			.message("Changing the player settings starts a new game. The current running game will be lost!\nWould you like to continue? ")
+			.showConfirm();
+	    }
+	    if (response == Dialog.Actions.YES) {
+		cf.deleteGrid();
+		cf.drawGrid();
+
+		props.setProperty("player1.name", tfPlayername1.getText());
+		props.setProperty("player2.name", tfPlayername2.getText());
+		props.setProperty("player1.color", player1ColorPicker.getValue().toString());
+		props.setProperty("player2.color", player2ColorPicker.getValue().toString());
+		props.save();
+		cf.getPlayers()[0].setColor(color1);
+		cf.getPlayers()[1].setColor(color2);
+		l1.setText("Player 1: " + tfPlayername1.getText());
+		l2.setText("Player 2: " + tfPlayername2.getText());
+		r1.setFill(Color.web(player1ColorPicker.getValue().toString()));
+		r2.setFill(Color.web(player2ColorPicker.getValue().toString()));
+		stage.close();
+
+	    }
 	}
 
     }
@@ -82,9 +104,6 @@ public class FXMLPlayerSettingsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-	System.out.println("TEST");
-	System.out.println(Math.sqrt(4));
-	System.out.println(Math.pow(4, 2));
 
 	CFProperties props = CFProperties.getInstance();
 
