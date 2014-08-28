@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.input.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" fx:id="apane" prefHeight="486.0" prefWidth="579.0" fx:controller="connectfour.controllers.FXMLDocumentController">
+    <fx:define>
+	<ToggleGroup fx:id="RB_Group" />
+    </fx:define>
+    <children>
+	<ImageView id="iv2" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="322.0" pickOnBounds="true" preserveRatio="true" />
+	<MenuBar id="menubar" fx:id="mainMenu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+	    <menus>
+		<Menu id="mGame" mnemonicParsing="false" text="Game">
+		    <items>
+			<Menu mnemonicParsing="false" text="New Game">
+			    <items>
+				<MenuItem mnemonicParsing="false" text="Local" id="gamemode-local" onAction="#handleNewLocalGameAction" />
+				<MenuItem mnemonicParsing="false" text="Remote" id="gamemode-remote" onAction="#handleNewRemoteGameAction" />
+			    </items>
+			</Menu>
+			<MenuItem mnemonicParsing="false" onAction="#handleCloseAction" text="Close" fx:id="miClose" />
+		    </items>
+		</Menu>
+		<Menu mnemonicParsing="false" text="Options">
+		    <items>
+			<MenuItem mnemonicParsing="false" text="Player..." fx:id="miPlayer" onAction="#handlePlayerSettingsAction"  />
+			<Menu mnemonicParsing="false" text="Grid Size" fx:id="menuGridSize">
+			    <items>
+				<RadioMenuItem toggleGroup="$RB_Group" onAction="#handleGridSizeAction" mnemonicParsing="false" text="3 x 3 (Tic Tac Toe)" fx:id="rmiGridSize1">
+				    <accelerator>
+					<KeyCodeCombination control="DOWN" code="DIGIT1" alt="UP" meta="UP" shift="UP" shortcut="UP" fx:id="kcc1" />
+				    </accelerator>
+				    <properties rows="3" columns="3" gamemode="2" />
+				</RadioMenuItem>
+				<RadioMenuItem toggleGroup="$RB_Group" onAction="#handleGridSizeAction" mnemonicParsing="false" selected="true" text="7 x 6 (Classic)" fx:id="rmiGridSize2">
+				    <accelerator>
+					<KeyCodeCombination control="DOWN" code="DIGIT2" alt="UP" meta="UP" shift="UP" shortcut="UP" fx:id="kcc2" />
+				    </accelerator>
+				    <properties rows="6" columns="7" gamemode="1" />
+				</RadioMenuItem>
+			    </items>
+			</Menu>
+			<SeparatorMenuItem mnemonicParsing="false" />
+			<MenuItem mnemonicParsing="false" text="Settings" />
+		    </items>
+		</Menu>
+		<Menu mnemonicParsing="false" text="Help">
+		    <items>
+			<MenuItem mnemonicParsing="false" text="How to play" />
+			<MenuItem mnemonicParsing="false" onAction="#handleAboutAction" text="About" fx:id="miAbout" />
+		    </items>
+		</Menu>
+	    </menus>
+	</MenuBar>
+	<Label fx:id="lMoves" layoutY="40"  AnchorPane.rightAnchor="20.0" text="Moves: 0" />
+	<ImageView fx:id="ivActivePlayer" layoutX="10" layoutY="43" />
+	<Label text="Player 1:" layoutX="45" layoutY="40" fx:id="lInfoPlayerName1" />
+	<Label text="Player 2:" layoutX="45" layoutY="60" fx:id="lInfoPlayerName2" />
+	<Rectangle layoutX="25" layoutY="40" width="15" height="15" stroke="BLACK" fx:id="raInfoPlayerColor1" />
+	<Rectangle layoutX="25" layoutY="60" width="15" height="15" stroke="BLACK" fx:id="raInfoPlayerColor2" />
+    </children>
+</AnchorPane>
